@@ -1,0 +1,10 @@
+.list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.dialogs {
+  display: grid;
+  grid-template-columns: 3fr 10fr;
+}

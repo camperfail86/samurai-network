@@ -1,0 +1,36 @@
+.nav {
+  background-color: #3400d3;
+  grid-area: nav;
+  box-shadow: 0 0 2px rgba(250, 250, 250, 0.3);
+  border: 1px solid rgba(250, 250, 250, 0.3);
+  border-radius: 20px;
+  height: 170px;
+}
+
+.item a {
+  color: white;
+  display: flex;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.item:not(:last-child) {
+  margin-bottom: 5px;
+}
+
+.list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+a.active {
+  background-color: #190099;
+  color: gold;
+}

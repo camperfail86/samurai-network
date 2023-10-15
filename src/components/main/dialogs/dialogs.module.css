@@ -8,3 +8,28 @@
   display: grid;
   grid-template-columns: 3fr 10fr;
 }
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  background: #0c0032;
+}
+
+.messageUser {
+  display: flex;
+  justify-content: right;
+}
+
+.message {
+
+}
+
+.link {
+  color: white;
+  text-decoration: none;
+}
+
+.link:hover {
+  color: dodgerblue;
+}

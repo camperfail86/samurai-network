@@ -1,15 +1,7 @@
 import {NavLink, Route, Routes} from 'react-router-dom';
 import style from './dialogs.module.css';
-
-export type DialogItemType = {
-    name: string
-    id: number
-}
-
-export type MessageType = {
-    message: string
-    id: number
-}
+import React from "react";
+import {DialogItemType, MessageType} from "../../../App";
 
 export type DialogsPropsType = {
     names: DialogItemType[]
@@ -18,7 +10,7 @@ export type DialogsPropsType = {
 
 function Message(props: MessageType) {
     return (
-        <div>{props.message}</div>
+        <div className={`${style.message} ${props.id === 1 ? style.messageUser : ''}`}>{props.message}</div>
     )
 }
 
@@ -27,7 +19,7 @@ function DialogItem(props: DialogItemType) {
 
     return (
         <li className={style.item}>
-            <NavLink to={path}>{props.name}</NavLink>
+            <NavLink className={style.link} to={path}>{props.name}</NavLink>
         </li>
     )
 }
@@ -35,7 +27,7 @@ function DialogItem(props: DialogItemType) {
 // let messagesItems2 = messages2.map((m) => <Message key={m.id} message={m.message}/>)
 
 function Dialogs(props: DialogsPropsType) {
-    let messagesItems = props.messages.map((m,index) => <Message key={m.id} message={m.message} id={m.id}/>)
+    let messagesItems = props.messages.map((m) => <Message key={m.id} message={m.message} id={m.id}/>)
     let dialogs = props.names.map((n) => <DialogItem key={n.id} name={n.name} id={n.id}/>)
     return (
         <div className={style.dialogs}>
@@ -44,8 +36,8 @@ function Dialogs(props: DialogsPropsType) {
             </ul>
             <div className={style.messages}>
                 <Routes>
-                    <Route path={'/dialogs/1'} element={<div>{messagesItems}</div>}/>
-                    {/*<Route path={'/dialogs/2'} element={<div>{messagesItems2}</div>}/>*/}
+                    <Route path='/1' element={messagesItems}/>
+                    <Route path='/2' element={<div>2</div>}/>
                 </Routes>
             </div>
         </div>

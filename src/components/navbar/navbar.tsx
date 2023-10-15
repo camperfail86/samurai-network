@@ -1,11 +1,13 @@
 import style from './navbar.module.css';
 import {BrowserRouter, NavLink} from 'react-router-dom';
+import {FriendsType} from "../../App";
+import {Friends} from "./friends/friends";
 
-type IsActiveType = {
-    isActive: boolean
+export type FriendsPropsType = {
+    friends: FriendsType[]
 }
 
-export const Navbar = () => {
+export const Navbar = (props: FriendsPropsType) => {
     return (
         <nav className={style.nav}>
             <ul className={style.list}>
@@ -30,6 +32,10 @@ export const Navbar = () => {
                              to="/settings">Settings</NavLink>
                 </li>
             </ul>
+            <div>
+                <h2 className={style.friends}>Friends</h2>
+                <Friends friends={props.friends}/>
+            </div>
         </nav>
     )
 }

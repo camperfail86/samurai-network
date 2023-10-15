@@ -1,0 +1,22 @@
+.friends {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    background-color: #3400d3;
+    padding: 0 10px;
+}
+
+.friend {
+    border: 1px solid black;
+    border-radius: 50px;
+    padding: 10px 5px;
+    cursor: pointer;
+}
+
+.female {
+    background: dodgerblue;
+}
+
+.male {
+    background: violet;
+}

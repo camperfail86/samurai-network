@@ -1,13 +1,15 @@
-// import style from './posts.module.css';
-
 import {Post} from "./post/post";
+import {ProfilePropsType} from "../profile/profile";
+import {PostsType} from "../../../App";
 
-export function Posts() {
-  return (
-    <>
-      <Post likes="12"/>
-      <Post likes="20"/>
-      <Post />
-    </>
-  )
+type PostsPropsType = {
+    posts: PostsType[]
+}
+
+export function Posts(props: PostsPropsType) {
+    return (
+        <>
+            {props.posts.map(p => <Post key={p.id} likes={p.likes} text={p.text} id={p.id}/>)}
+        </>
+    )
 };

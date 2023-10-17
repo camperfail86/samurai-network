@@ -41,6 +41,7 @@ export type stateType = {
 export type appStateType = {
     state: stateType
     addPost: (post: string) => void
+    addMessage: (message: string)=> void
 }
 
 function App(props: appStateType) {
@@ -56,6 +57,7 @@ function App(props: appStateType) {
                             addPost={props.addPost}/>}/>
                         <Route path="/dialogs/*" element={<Dialogs
                             messages={props.state.messages}
+                            addMessage={props.addMessage}
                             names={props.state.names}/>}/>
                         <Route path="/news" element={<News/>}/>
                         <Route path="/music" element={<Music/>}/>

@@ -1,13 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import {state, subscribe} from "./redux/state"
-import {addPost} from "./redux/state"
+import App, {stateType} from './App';
+import {store} from "./redux/state";
+
+// убрать пропсы если что
 const rerender = () => {
     ReactDOM.render(
-        <App addPost={addPost} state={state}/>,
+        <App state={store.getState()}
+             addMessage={store.addMessage.bind(store)}
+             addPost={store.addPost.bind(store)}/>,
         document.getElementById('root'));
 }
 rerender()
-subscribe(rerender)
+store.subscribe(rerender)

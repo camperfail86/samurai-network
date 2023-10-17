@@ -1,11 +1,12 @@
 import {NavLink, Route, Routes} from 'react-router-dom';
 import style from './dialogs.module.css';
-import React from "react";
+import React, {createRef} from "react";
 import {DialogItemType, MessageType} from "../../../App";
 
 export type DialogsPropsType = {
     names: DialogItemType[]
     messages: MessageType[]
+    addMessage:(message: string)=> void
 }
 
 function Message(props: MessageType) {
@@ -27,6 +28,14 @@ function DialogItem(props: DialogItemType) {
 // let messagesItems2 = messages2.map((m) => <Message key={m.id} message={m.message}/>)
 
 function Dialogs(props: DialogsPropsType) {
+    const onClickHandler = () => {
+        if (inputRef.current) {
+            props.addMessage(inputRef.current.value)
+            inputRef.current.value = ''
+        }
+
+    }
+    let inputRef = createRef<HTMLInputElement>()
     let messagesItems = props.messages.map((m) => <Message key={m.id} message={m.message} id={m.id}/>)
     let dialogs = props.names.map((n) => <DialogItem key={n.id} name={n.name} id={n.id}/>)
     return (
@@ -40,6 +49,8 @@ function Dialogs(props: DialogsPropsType) {
                     <Route path='/2' element={<div>2</div>}/>
                 </Routes>
             </div>
+            <input type="text" ref={inputRef}/>
+            <button onClick={onClickHandler}>Добавить сообщение</button>
         </div>
     )
 }

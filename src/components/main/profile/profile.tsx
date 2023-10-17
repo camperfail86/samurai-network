@@ -1,8 +1,7 @@
 import s from './profile.module.css';
 import {Posts} from '../posts/posts';
-import {ChangeEvent, useState} from 'react';
+import {useRef} from 'react';
 import {PostsType} from "../../../App";
-import {state, subscribe} from "../../../redux/state";
 
 export type ProfilePropsType = {
     posts: PostsType[]
@@ -10,14 +9,20 @@ export type ProfilePropsType = {
 }
 
 export function Profile(props: ProfilePropsType) {
-    const [value, setValue] = useState('')
+    // const [value, setValue] = useState('')
+    let newPostElement = useRef<HTMLTextAreaElement>(null)
     const onClickHandler = () => {
-        props.addPost(value)
-        setValue('')
+        // props.addPost(value)
+        // setValue('')
+        if (newPostElement.current) {
+            let text = newPostElement.current.value
+            props.addPost(text)
+            newPostElement.current.value = ''
+        }
     }
-    const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        setValue(e.currentTarget.value)
-    }
+    // const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    //     setValue(e.currentTarget.value)
+    // }
 
     return (
         <>
@@ -27,7 +32,8 @@ export function Profile(props: ProfilePropsType) {
             </div>
             <Posts posts={props.posts}/>
             <div>
-                <textarea onChange={onChangeHandler} title={value} cols={20} rows={3}></textarea>
+                {/*<input onChange={onChangeHandler} title={value}></input>*/}
+                <textarea ref={newPostElement}></textarea>
                 <button onClick={onClickHandler}>+</button>
             </div>
         </>

@@ -1,0 +1,39 @@
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    cursor: pointer;
+}
+
+.page {
+    cursor: pointer;
+    margin-right: 2px;
+}
+
+.active {
+    margin-right: 2px;
+    cursor: pointer;
+    font-weight: bold;
+    color: aqua;
+}
+
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #6ebeff;
+    border-bottom-color: #337AB7;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

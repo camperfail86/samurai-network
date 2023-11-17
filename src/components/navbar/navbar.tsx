@@ -31,6 +31,10 @@ export const Navbar = (props: FriendsPropsType) => {
                     <NavLink className={({isActive}) => (isActive ? style.active : '')}
                              to="/settings">Settings</NavLink>
                 </li>
+                <li className={style.item}>
+                    <NavLink className={({isActive}) => (isActive ? style.active : '')}
+                             to="/users">Users</NavLink>
+                </li>
             </ul>
             <div>
                 <h2 className={style.friends}>Friends</h2>

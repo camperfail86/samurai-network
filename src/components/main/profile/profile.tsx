@@ -1,38 +1,37 @@
 import s from './profile.module.css';
 import {Posts} from '../posts/posts';
-import {useRef} from 'react';
-import {PostsType} from "../../../App";
+import {RefObject, useRef} from 'react';
+import {ActionType, PostsType} from "../../../App";
+import {postsReducerAC} from "../../../reducers/postsReducer";
+import {ProfileType} from "../../../reducers/profileReducer";
 
 export type ProfilePropsType = {
     posts: PostsType[]
-    addPost: (post: string) => void
+    dispatch: (action: ActionType) => void
+    // newPostElement: RefObject<HTMLTextAreaElement>
+    // onClickHandler:() => void
+    profile: ProfileType
 }
 
 export function Profile(props: ProfilePropsType) {
-    // const [value, setValue] = useState('')
     let newPostElement = useRef<HTMLTextAreaElement>(null)
     const onClickHandler = () => {
-        // props.addPost(value)
-        // setValue('')
         if (newPostElement.current) {
             let text = newPostElement.current.value
-            props.addPost(text)
+            props.dispatch(postsReducerAC(text))
             newPostElement.current.value = ''
         }
     }
-    // const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    //     setValue(e.currentTarget.value)
-    // }
 
     return (
         <>
-            <img src="" alt=""/>
+            <img className={s.avatar}
+                src={props.profile.photos.small ? props.profile.photos.small : ''} alt=""/> фото
             <div className={s.title}>
                 ПРОФИЛЬ
             </div>
             <Posts posts={props.posts}/>
             <div>
-                {/*<input onChange={onChangeHandler} title={value}></input>*/}
                 <textarea ref={newPostElement}></textarea>
                 <button onClick={onClickHandler}>+</button>
             </div>

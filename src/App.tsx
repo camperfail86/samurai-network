@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import {Header} from "./components/header/header";
 import {Navbar} from "./components/navbar/navbar";
@@ -8,6 +8,15 @@ import News from "./components/main/news/news";
 import Dialogs from "./components/main/dialogs/dialogs";
 import {Music} from "./components/main/music/music";
 import Settings from "./components/main/settings/settings";
+import {postsReducerAC, postsReduceType} from "./reducers/postsReducer";
+import {MessageActionType, messageObjType} from "./reducers/messageReducer";
+import {UsersAPI, UsersType} from "./components/main/users/UsersAPI";
+import {addUsersAC, InitStateType, UserActionType} from './reducers/usersReducer';
+import axios from "axios";
+import {ProfileContainer} from "./components/main/profile/ProfileContainer";
+import {addProfileInfoType, ProfileType} from "./reducers/profileReducer";
+
+export type ActionType = MessageActionType | postsReduceType | UserActionType | addProfileInfoType
 
 export type FriendsType = {
     name: string
@@ -32,16 +41,25 @@ export type PostsType = {
 }
 
 export type stateType = {
-    messages: MessageType[]
-    names: DialogItemType[]
+    usersInit: InitStateType
+    messages: messageObjType
     friends: FriendsType[]
     posts: PostsType[]
+    profile: ProfileType
 }
 
 export type appStateType = {
     state: stateType
-    addPost: (post: string) => void
-    addMessage: (message: string)=> void
+    // addPost: (post: string) => void
+    // addMessage: (message: string) => void
+    dispatch: (action: ActionType) => void
+}
+
+export const config = {
+    withCredentials: true,
+    headers: {
+        "API-KEY": "8bf529cc-e7bb-4c13-ad05-c2e0207800f3"
+    }
 }
 
 function App(props: appStateType) {
@@ -52,14 +70,27 @@ function App(props: appStateType) {
                 <Navbar friends={props.state.friends}/>
                 <main className="main">
                     <Routes>
-                        <Route path="/profile" element={<Profile
+                        <Route path="/profile/*" element={<ProfileContainer
+                            profile={props.state.profile}
                             posts={props.state.posts}
-                            addPost={props.addPost}/>}/>
+                            // addPost={props.addPost}
+                            dispatch={props.dispatch}
+                        />}
+                        />
                         <Route path="/dialogs/*" element={<Dialogs
                             messages={props.state.messages}
-                            addMessage={props.addMessage}
-                            names={props.state.names}/>}/>
+                            friends={props.state.friends}
+                            dispatch={props.dispatch}
+                        />}/>
                         <Route path="/news" element={<News/>}/>
+                        <Route path="/users" element={<UsersAPI
+                            totalUsersCount={props.state.usersInit.totalUsersCount}
+                            pageSize={props.state.usersInit.pageSize}
+                            users={props.state.usersInit.users}
+                            activePage={props.state.usersInit.activePage}
+                            isFetching={props.state.usersInit.isFetching}
+                            dispatch={props.dispatch}
+                        />}/>
                         <Route path="/music" element={<Music/>}/>
                         <Route path="/settings" element={<Settings/>}/>
                     </Routes>

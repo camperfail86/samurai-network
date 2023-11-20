@@ -29,16 +29,16 @@ export const usersReducer = (state = initialState, action: UserActionType) => {
         case "ADD-USERS":
             return {...state, users: action.payload.array.map(u => u)}
         case "FOLLOW-UNFOLLOW":
-            return {...state, users: state.users.map(u => u.id === action.payload.userId ? {...u, followed: !u.followed} : u)}
+            return {...state, users: state.users.map(u => u.id === action.payload.userId ? {...u, followed: action.payload.boolean} : u)}
         default:
             return state
     }
 }
 export type FollowUserType = ReturnType<typeof followUserAC>
-export const followUserAC = (userId: number) => {
+export const followUserAC = (boolean: boolean, userId: number) => {
     return {
         type: 'FOLLOW-UNFOLLOW',
-        payload: {userId}
+        payload: {boolean, userId}
     } as const
 }
 

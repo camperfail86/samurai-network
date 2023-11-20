@@ -15,6 +15,9 @@ import {addUsersAC, InitStateType, UserActionType} from './reducers/usersReducer
 import axios from "axios";
 import {ProfileContainer} from "./components/main/profile/ProfileContainer";
 import {addProfileInfoType, ProfileType} from "./reducers/profileReducer";
+import {useDispatch, useSelector} from "react-redux";
+import {AppStateType} from "./redux/redux-store";
+import {HeaderContainerConnect} from "./components/header/headerContainer";
 
 export type ActionType = MessageActionType | postsReduceType | UserActionType | addProfileInfoType
 
@@ -61,35 +64,38 @@ export const config = {
         "API-KEY": "8bf529cc-e7bb-4c13-ad05-c2e0207800f3"
     }
 }
-
-function App(props: appStateType) {
+// props: appStateType
+function App() {
+    const dispatch = useDispatch()
+    const state = useSelector((state: AppStateType) => state)
     return (
         <BrowserRouter>
             <div className="wrapper">
-                <Header/>
-                <Navbar friends={props.state.friends}/>
+                <HeaderContainerConnect/>
+                <Navbar friends={state.friends}/>
                 <main className="main">
                     <Routes>
-                        <Route path="/profile/*" element={<ProfileContainer
-                            profile={props.state.profile}
-                            posts={props.state.posts}
-                            // addPost={props.addPost}
-                            dispatch={props.dispatch}
+                        <Route path="/profile/:userId?" element={
+                            <ProfileContainer
+                            // profile={props.state.profile}
+                            // posts={props.state.posts}
+                            // dispatch={props.dispatch}
                         />}
                         />
                         <Route path="/dialogs/*" element={<Dialogs
-                            messages={props.state.messages}
-                            friends={props.state.friends}
-                            dispatch={props.dispatch}
+                            messages={state.messages}
+                            friends={state.friends}
+                            dispatch={dispatch}
                         />}/>
                         <Route path="/news" element={<News/>}/>
                         <Route path="/users" element={<UsersAPI
-                            totalUsersCount={props.state.usersInit.totalUsersCount}
-                            pageSize={props.state.usersInit.pageSize}
-                            users={props.state.usersInit.users}
-                            activePage={props.state.usersInit.activePage}
-                            isFetching={props.state.usersInit.isFetching}
-                            dispatch={props.dispatch}
+                            // totalUsersCount={state.usersInit.totalUsersCount}
+                            // pageSize={state.usersInit.pageSize}
+                            // users={state.usersInit.users}
+                            usersInit={state.usersInit}
+                            // activePage={state.usersInit.activePage}
+                            // isFetching={state.usersInit.isFetching}
+                            dispatch={dispatch}
                         />}/>
                         <Route path="/music" element={<Music/>}/>
                         <Route path="/settings" element={<Settings/>}/>

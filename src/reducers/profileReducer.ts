@@ -35,7 +35,7 @@ let initialState: ProfileType  = {
     "lookingForAJob": true,
     "lookingForAJobDescription": null,
     "fullName": 'VaSya',
-    "userId": 3,
+    "userId": 10,
     "photos": {
         "small": null,
         "large": null
@@ -48,7 +48,6 @@ export type ProfileActionType = addProfileInfoType
 export const profileReducer = (state  = initialState, action: ProfileActionType) => {
     switch (action.type) {
         case "ADD-INFO-PROFILE":
-
             return action.payload.profileInfo
         default: return state
     }

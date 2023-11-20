@@ -6,7 +6,7 @@ import {postsReducerAC} from "../../../reducers/postsReducer";
 import {ProfileType} from "../../../reducers/profileReducer";
 
 export type ProfilePropsType = {
-    posts: PostsType[]
+    // posts: PostsType[]
     dispatch: (action: ActionType) => void
     // newPostElement: RefObject<HTMLTextAreaElement>
     // onClickHandler:() => void
@@ -25,12 +25,12 @@ export function Profile(props: ProfilePropsType) {
 
     return (
         <>
-            <img className={s.avatar}
-                src={props.profile.photos.small ? props.profile.photos.small : ''} alt=""/> фото
             <div className={s.title}>
                 ПРОФИЛЬ
             </div>
-            <Posts posts={props.posts}/>
+            <img className={s.avatar} src={props.profile.photos.small ? props.profile.photos.small : ''} alt=""/>
+            <span>{props.profile.fullName}</span>
+            {/*<Posts posts={props.posts}/>*/}
             <div>
                 <textarea ref={newPostElement}></textarea>
                 <button onClick={onClickHandler}>+</button>

@@ -2,9 +2,11 @@ import React from 'react';
 import s from "./users.module.css";
 import {followUserAC} from "../../../reducers/usersReducer";
 import lostImage from "../../../img/anonim.jpeg";
-import {ActionType} from "../../../App";
+import {ActionType, config} from "../../../App";
 import {UsersType} from "./UsersAPI";
 import {NavLink} from "react-router-dom";
+import axios from "axios";
+import {userApi} from "../../../api/users-api";
 
 export type UsersPropsType = {
     users: UsersType[]
@@ -33,7 +35,12 @@ const Users = (props: UsersPropsType) => {
             })}
             {props.users.map(u => {
                 const follow = () => {
-                    props.dispatch(followUserAC(u.id))
+                    u.followed ?
+                        // axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {} ,config)
+                        userApi.unfollow(u.id)
+                            .then((res) => props.dispatch(followUserAC(false, u.id))) :
+                        userApi.follow(u.id)
+                            .then((res) => props.dispatch(followUserAC(true,  u.id)))
                 }
                 return (<div key={u.id}>
                     <div>

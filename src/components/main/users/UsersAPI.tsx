@@ -4,13 +4,14 @@ import s from './users.module.css'
 import {ActionType, config} from "../../../App";
 import {
     addUsersAC,
-    followUserAC,
+    followUserAC, InitStateType,
     setTotalCountAC,
     ToggleActivePageAC,
     toggleFetchingAC
 } from "../../../reducers/usersReducer";
 import axios from "axios";
 import Users from "./Users";
+import {userApi} from "../../../api/users-api";
 
 export type UsersType = {
     followed: boolean
@@ -22,12 +23,13 @@ export type UsersType = {
 }
 
 export type UsersAPITypeProps = {
-    users: UsersType[]
+    // users: UsersType[]
     dispatch: (action: ActionType) => void
-    totalUsersCount: number
-    pageSize: number
-    activePage: number
-    isFetching: boolean
+    // totalUsersCount: number
+    // pageSize: number
+    // activePage: number
+    // isFetching: boolean
+    usersInit: InitStateType
 }
 
 // export const Users = ({users, dispatch}: UsersTypeProps) => {
@@ -57,8 +59,8 @@ export type UsersAPITypeProps = {
 
 export class UsersAPI extends React.Component<UsersAPITypeProps, {}> {
     componentDidMount() {
-        // axios.get('https://social-network.samuraijs.com/api/1.0/users', config)
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.activePage}&count=${this.props.pageSize}`, config)
+        // axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.usersInit.activePage}&count=${this.props.usersInit.pageSize}`, config)
+        userApi.getUser(this.props.usersInit.activePage, this.props.usersInit.pageSize)
             .then(res => {
                 this.props.dispatch(addUsersAC(res.data.items))
                 // this.props.dispatch(setTotalCountAC(res.data.totalCount))
@@ -69,7 +71,8 @@ export class UsersAPI extends React.Component<UsersAPITypeProps, {}> {
     onClickHandler = (p: number) => {
         this.props.dispatch(ToggleActivePageAC(p))
         this.props.dispatch(toggleFetchingAC(true))
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${p}&count=${this.props.pageSize}`, config)
+        // axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${p}&count=${this.props.usersInit.pageSize}`, config)
+        userApi.getUser(p, this.props.usersInit.pageSize)
             .then(res => {
                 this.props.dispatch(addUsersAC(res.data.items))
                 this.props.dispatch(toggleFetchingAC(false))
@@ -79,12 +82,12 @@ export class UsersAPI extends React.Component<UsersAPITypeProps, {}> {
     render() {
         return (
             <>
-                {this.props.isFetching ? <div className={s.loader}></div> :
+                {this.props.usersInit.isFetching ? <div className={s.loader}></div> :
                     <Users
-                        totalUsersCount={this.props.totalUsersCount}
-                        pageSize={this.props.pageSize}
-                        users={this.props.users}
-                        activePage={this.props.activePage}
+                        totalUsersCount={this.props.usersInit.totalUsersCount}
+                        pageSize={this.props.usersInit.pageSize}
+                        users={this.props.usersInit.users}
+                        activePage={this.props.usersInit.activePage}
                         dispatch={this.props.dispatch}
                         onClickHandler={this.onClickHandler}
                     />}

@@ -1,6 +1,11 @@
 import {UsersType, UsersAPITypeProps} from "../components/main/users/UsersAPI";
 
-export type UserActionType = FollowUserType | AddUsersType | ToggleActivePage | setTotalCountType | ToggleFetchingType
+export type UserActionType = FollowUserType
+    | AddUsersType
+    | ToggleActivePage
+    | setTotalCountType
+    | ToggleFetchingType
+    | ToggleDisabledType
 
 export type InitStateType = {
     users: UsersType[]
@@ -8,6 +13,7 @@ export type InitStateType = {
     pageSize: number
     activePage: number
     isFetching: boolean
+    isDisabled: boolean
 }
 
 let initialState: InitStateType = {
@@ -15,7 +21,8 @@ let initialState: InitStateType = {
     totalUsersCount: 100,
     pageSize: 5,
     activePage: 1,
-    isFetching: true
+    isFetching: true,
+    isDisabled: false
 }
 
 export const usersReducer = (state = initialState, action: UserActionType) => {
@@ -30,6 +37,9 @@ export const usersReducer = (state = initialState, action: UserActionType) => {
             return {...state, users: action.payload.array.map(u => u)}
         case "FOLLOW-UNFOLLOW":
             return {...state, users: state.users.map(u => u.id === action.payload.userId ? {...u, followed: action.payload.boolean} : u)}
+        case "TOGGLE-DISABLED": {
+            return {...state, isDisabled: action.payload.isDisabled}
+        }
         default:
             return state
     }
@@ -72,5 +82,13 @@ export const toggleFetchingAC = (isFetching: boolean) => {
     return {
         type: 'TOGGLE-FETCHING',
         payload: {isFetching}
+    } as const
+}
+
+export type ToggleDisabledType = ReturnType<typeof toggleDisabledAC>
+export const toggleDisabledAC = (isDisabled: boolean) => {
+    return {
+        type: 'TOGGLE-DISABLED',
+        payload: {isDisabled}
     } as const
 }

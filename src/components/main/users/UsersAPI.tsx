@@ -84,6 +84,7 @@ export class UsersAPI extends React.Component<UsersAPITypeProps, {}> {
             <>
                 {this.props.usersInit.isFetching ? <div className={s.loader}></div> :
                     <Users
+                        isDisabled={this.props.usersInit.isDisabled}
                         totalUsersCount={this.props.usersInit.totalUsersCount}
                         pageSize={this.props.usersInit.pageSize}
                         users={this.props.usersInit.users}

@@ -1,6 +1,6 @@
 import React from 'react';
 import s from "./users.module.css";
-import {followUserAC} from "../../../reducers/usersReducer";
+import {followUserAC, toggleDisabledAC} from "../../../reducers/usersReducer";
 import lostImage from "../../../img/anonim.jpeg";
 import {ActionType, config} from "../../../App";
 import {UsersType} from "./UsersAPI";
@@ -15,6 +15,7 @@ export type UsersPropsType = {
     pageSize: number
     activePage: number
     onClickHandler: (p: number) => void
+    isDisabled: boolean
 }
 
 const Users = (props: UsersPropsType) => {
@@ -35,12 +36,21 @@ const Users = (props: UsersPropsType) => {
             })}
             {props.users.map(u => {
                 const follow = () => {
+                    props.dispatch(toggleDisabledAC(true))
                     u.followed ?
                         // axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`, {} ,config)
                         userApi.unfollow(u.id)
-                            .then((res) => props.dispatch(followUserAC(false, u.id))) :
+                            .then((res) => {
+                                    props.dispatch(followUserAC(false, u.id))
+                                    props.dispatch(toggleDisabledAC(false))
+                                }
+                            ) :
                         userApi.follow(u.id)
-                            .then((res) => props.dispatch(followUserAC(true,  u.id)))
+                            .then((res) => {
+                                props.dispatch(followUserAC(true, u.id))
+                                props.dispatch(toggleDisabledAC(false))
+                            })
+
                 }
                 return (<div key={u.id}>
                     <div>
@@ -48,8 +58,12 @@ const Users = (props: UsersPropsType) => {
                             <img className={s.avatar} src={u.photos.small ? u.photos.small : lostImage}></img>
                         </NavLink>
                         <div>{u.name}</div>
-                        {u.followed ? <button onClick={follow}>FOLLOW</button>
-                            : <button onClick={follow}>UNFOLLOW</button>}
+                        {u.followed ? <button
+                                disabled={props.isDisabled}
+                                onClick={follow}>FOLLOW</button>
+                            : <button
+                                disabled={props.isDisabled}
+                                onClick={follow}>UNFOLLOW</button>}
                     </div>
                     <div>
                         {u.id}

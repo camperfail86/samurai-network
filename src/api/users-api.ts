@@ -1,7 +1,7 @@
 import axios from "axios";
 import {config} from "../App";
 
-const instance = axios.create(
+export const instance = axios.create(
     {
         withCredentials: true,
         headers: {
@@ -12,7 +12,7 @@ const instance = axios.create(
 )
 
 export const userApi= {
-    getUser(activePage: number, pageSize: number) {
+    getUsers(activePage: number, pageSize: number) {
         return instance.get(`/users?page=${activePage}&count=${pageSize}`)
     },
     unfollow(id: number) {
@@ -20,5 +20,8 @@ export const userApi= {
     },
     follow(id: number) {
         return instance.post(`/follow/${id}`)
+    },
+    getUserInfo(id: number) {
+        return instance.get(`/profile/${id}`)
     }
 }

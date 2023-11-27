@@ -1,17 +1,12 @@
-import React, {useState} from 'react';
-import lostImage from './../../../img/anonim.jpeg';
+import React from 'react';
 import s from './users.module.css'
-import {ActionType, config} from "../../../App";
 import {
-    addUsersAC,
-    followUserAC, InitStateType,
-    setTotalCountAC,
-    ToggleActivePageAC,
-    toggleFetchingAC
+    getUsersTC,
+    InitStateType, toggleActivePageTC,
 } from "../../../reducers/usersReducer";
-import axios from "axios";
 import Users from "./Users";
-import {userApi} from "../../../api/users-api";
+import {AppDispatchType, AppStateType} from "../../../redux/redux-store";
+import {connect} from "react-redux";
 
 export type UsersType = {
     followed: boolean
@@ -23,60 +18,35 @@ export type UsersType = {
 }
 
 export type UsersAPITypeProps = {
-    // users: UsersType[]
-    dispatch: (action: ActionType) => void
-    // totalUsersCount: number
-    // pageSize: number
-    // activePage: number
-    // isFetching: boolean
+    dispatch: AppDispatchType
     usersInit: InitStateType
 }
 
-// export const Users = ({users, dispatch}: UsersTypeProps) => {
-//
-//     return (
-//         <div>
-//             {users.map(u => {
-//                 const follow = ()=> {
-//                     dispatch(followUserAC(u.id))
-//                 }
-//                 return (<div key={u.id}>
-//                     <div>
-//                         <img className={s.avatar} src={lostImage}></img>
-//                         <div>{u.name}</div>
-//                         {u.followed ? <button onClick={follow}>FOLLOW</button>
-//                                   : <button onClick={follow}>UNFOLLOW</button>}
-//                     </div>
-//                     <div>
-//                         {u.id}
-//                     </div>
-//                 </div>)
-//             })
-//             }
-//         </div>
-//     );
-// };
+const mapStateToProps = (state: AppStateType) => {
+    return {
+        usersInit: state.usersInit
+    }
+}
 
-export class UsersAPI extends React.Component<UsersAPITypeProps, {}> {
+type mapDispatchToPropsType = {
+    toggleActivePageTC:(p: number, pageSize: number) => void
+    getUsersTC:(activePage: number, pageSize: number) => void
+}
+
+type mapStateToPropsType = {
+    usersInit: InitStateType
+}
+
+type PropsType = mapStateToPropsType & mapDispatchToPropsType
+// UsersAPITypeProps, {}
+
+class UsersAPI extends React.Component<PropsType> {
     componentDidMount() {
-        // axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.usersInit.activePage}&count=${this.props.usersInit.pageSize}`, config)
-        userApi.getUser(this.props.usersInit.activePage, this.props.usersInit.pageSize)
-            .then(res => {
-                this.props.dispatch(addUsersAC(res.data.items))
-                // this.props.dispatch(setTotalCountAC(res.data.totalCount))
-                this.props.dispatch(toggleFetchingAC(false))
-            })
+        this.props.getUsersTC(this.props.usersInit.activePage, this.props.usersInit.pageSize)
     }
 
     onClickHandler = (p: number) => {
-        this.props.dispatch(ToggleActivePageAC(p))
-        this.props.dispatch(toggleFetchingAC(true))
-        // axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${p}&count=${this.props.usersInit.pageSize}`, config)
-        userApi.getUser(p, this.props.usersInit.pageSize)
-            .then(res => {
-                this.props.dispatch(addUsersAC(res.data.items))
-                this.props.dispatch(toggleFetchingAC(false))
-            })
+        this.props.toggleActivePageTC(p, this.props.usersInit.pageSize)
     }
 
     render() {
@@ -84,15 +54,19 @@ export class UsersAPI extends React.Component<UsersAPITypeProps, {}> {
             <>
                 {this.props.usersInit.isFetching ? <div className={s.loader}></div> :
                     <Users
-                        isDisabled={this.props.usersInit.isDisabled}
+                        isDisabledArray={this.props.usersInit.isDisabledArray}
                         totalUsersCount={this.props.usersInit.totalUsersCount}
                         pageSize={this.props.usersInit.pageSize}
                         users={this.props.usersInit.users}
                         activePage={this.props.usersInit.activePage}
-                        dispatch={this.props.dispatch}
+                        // dispatch={this.props.dispatch}
                         onClickHandler={this.onClickHandler}
                     />}
             </>
         )
     }
 };
+//
+// WithAuthRedirect
+export const UsersContainer =  connect(mapStateToProps, {toggleActivePageTC, getUsersTC})(UsersAPI)
+// export default UsersAPI

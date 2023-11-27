@@ -1,17 +1,18 @@
-import s from './profile.module.css';
-import React, {useEffect, useRef} from 'react';
-import {ActionType, PostsType} from "../../../App";
-import {postsReducerAC} from "../../../reducers/postsReducer";
+import React, {useEffect} from 'react';
 import {Profile} from "./profile";
 import axios from "axios";
-import {addProfileInfoAC, ProfileType} from "../../../reducers/profileReducer";
-import {AppStateType} from "../../../redux/redux-store";
-import {connect, useDispatch, useSelector} from "react-redux";
+import {addProfileInfoAC, getUserProfileInfoTC} from "../../../reducers/profileReducer";
+import {AppDispatchType, AppStateType} from "../../../redux/redux-store";
+import {useDispatch, useSelector} from "react-redux";
 import {
+    Navigate,
     useLocation,
     useNavigate,
     useParams,
 } from "react-router-dom";
+import {AuthType} from "../../../reducers/authReducer";
+import App from "../../../App";
+import {WithAuthRedirect} from "../../../hoc/withAuthRedirect";
 
 export interface WithRouterProps {
     location: ReturnType<typeof useLocation>;
@@ -19,15 +20,14 @@ export interface WithRouterProps {
     navigate: ReturnType<typeof useNavigate>;
 }
 
-export function ProfileContainer() {
-    const dispatch = useDispatch()
+function ProfileContainer() {
+    const dispatch = useDispatch<AppDispatchType>()
     const profile = useSelector((state: AppStateType) => state.profile)
+    const auth = useSelector<AppStateType, AuthType>((state: AppStateType) => state.auth)
     let { userId = 30118 } = useParams();
 
     useEffect(() => {
-        axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${userId}`).then((res) =>
-            dispatch(addProfileInfoAC(res.data))
-        )
+        dispatch(getUserProfileInfoTC(+userId))
     }, [])
 
     return (
@@ -56,4 +56,4 @@ function withRouter<Props extends WithRouterProps>(Component: React.ComponentTyp
     return ComponentWithRouterProp;
 }
 
-export default withRouter(ProfileContainer)
+export default WithAuthRedirect(withRouter(ProfileContainer))

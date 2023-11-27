@@ -1,23 +1,22 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import './App.css';
-import {Header} from "./components/header/header";
 import {Navbar} from "./components/navbar/navbar";
-import {Profile} from "./components/main/profile/profile";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import News from "./components/main/news/news";
 import Dialogs from "./components/main/dialogs/dialogs";
-import {Music} from "./components/main/music/music";
+import Music from "./components/main/music/music";
 import Settings from "./components/main/settings/settings";
-import {postsReducerAC, postsReduceType} from "./reducers/postsReducer";
+import { postsReduceType} from "./reducers/postsReducer";
 import {MessageActionType, messageObjType} from "./reducers/messageReducer";
-import {UsersAPI, UsersType} from "./components/main/users/UsersAPI";
-import {addUsersAC, InitStateType, UserActionType} from './reducers/usersReducer';
-import axios from "axios";
-import {ProfileContainer} from "./components/main/profile/ProfileContainer";
+import {UsersContainer} from "./components/main/users/UsersAPI";
+import {InitStateType, UserActionType} from './reducers/usersReducer';
+import ProfileContainer from "./components/main/profile/ProfileContainer";
 import {addProfileInfoType, ProfileType} from "./reducers/profileReducer";
 import {useDispatch, useSelector} from "react-redux";
-import {AppStateType} from "./redux/redux-store";
+import {AppDispatchType, AppStateType} from "./redux/redux-store";
 import {HeaderContainerConnect} from "./components/header/headerContainer";
+import {Login} from "./components/login/login";
+import {AuthType} from "./reducers/authReducer";
 
 export type ActionType = MessageActionType | postsReduceType | UserActionType | addProfileInfoType
 
@@ -66,8 +65,8 @@ export const config = {
 }
 // props: appStateType
 function App() {
-    const dispatch = useDispatch()
     const state = useSelector((state: AppStateType) => state)
+
     return (
         <BrowserRouter>
             <div className="wrapper">
@@ -75,30 +74,15 @@ function App() {
                 <Navbar friends={state.friends}/>
                 <main className="main">
                     <Routes>
-                        <Route path="/profile/:userId?" element={
-                            <ProfileContainer
-                            // profile={props.state.profile}
-                            // posts={props.state.posts}
-                            // dispatch={props.dispatch}
-                        />}
-                        />
+                        <Route path="/profile/:userId?" element={<ProfileContainer/>}/>
                         <Route path="/dialogs/*" element={<Dialogs
-                            messages={state.messages}
-                            friends={state.friends}
-                            dispatch={dispatch}
                         />}/>
                         <Route path="/news" element={<News/>}/>
-                        <Route path="/users" element={<UsersAPI
-                            // totalUsersCount={state.usersInit.totalUsersCount}
-                            // pageSize={state.usersInit.pageSize}
-                            // users={state.usersInit.users}
-                            usersInit={state.usersInit}
-                            // activePage={state.usersInit.activePage}
-                            // isFetching={state.usersInit.isFetching}
-                            dispatch={dispatch}
+                        <Route path="/users" element={<UsersContainer
                         />}/>
-                        <Route path="/music" element={<Music/>}/>
-                        <Route path="/settings" element={<Settings/>}/>
+                        <Route path="/music" element={<Music />}/>
+                        <Route path="/settings" element={<Settings />}/>
+                        <Route path="/login" element={<Login />}></Route>
                     </Routes>
                 </main>
             </div>

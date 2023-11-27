@@ -1,3 +1,7 @@
+import {Dispatch} from "redux";
+import axios from "axios";
+import {userApi} from "../api/users-api";
+
 export type ProfileType = {
     "aboutMe": null,
     "contacts": {
@@ -61,4 +65,10 @@ export const addProfileInfoAC = (profileInfo: ProfileType) => {
             profileInfo
         }
     } as const
+}
+
+export const getUserProfileInfoTC = (id: number) => (dispatch: Dispatch) => {
+    userApi.getUserInfo(id).then((res) =>
+        dispatch(addProfileInfoAC(res.data))
+    )
 }

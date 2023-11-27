@@ -25,7 +25,6 @@ type MapDispatchToPropsType = {
 
 type ProfilePropsType = MapDispatchToPropsType & MapStateToPropsType
 
-
 export interface WithRouterProps {
     location: ReturnType<typeof useLocation>;
     params: Record<string, string>;

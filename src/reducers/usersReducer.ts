@@ -21,7 +21,7 @@ export type InitStateType = {
 
 let initialState: InitStateType = {
     users: [],
-    totalUsersCount: 100,
+    totalUsersCount: 330,
     pageSize: 5,
     activePage: 1,
     isFetching: true,
@@ -105,7 +105,7 @@ export const getUsersTC = (activePage: number, pageSize: number) => (dispatch: D
     userApi.getUsers(activePage, pageSize)
         .then(res => {
             dispatch(addUsersAC(res.data.items))
-            // this.props.dispatch(setTotalCountAC(res.data.totalCount))
+            // dispatch(setTotalCountAC(res.data.totalCount))
             dispatch(toggleFetchingAC(false))
         })
 }

@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {Profile} from "./profile";
 import axios from "axios";
-import {addProfileInfoAC, getUserProfileInfoTC} from "../../../reducers/profileReducer";
+import {addProfileInfoAC, getStatusUserTC, getUserProfileInfoTC} from "../../../reducers/profileReducer";
 import {AppDispatchType, AppStateType} from "../../../redux/redux-store";
 import {useDispatch, useSelector} from "react-redux";
 import {
@@ -13,6 +13,9 @@ import {
 import {AuthType} from "../../../reducers/authReducer";
 import App from "../../../App";
 import {WithAuthRedirect} from "../../../hoc/withAuthRedirect";
+import {compose} from "redux";
+import {profileApi} from "../../../api/profile-api";
+import s from "../users/users.module.css";
 
 export interface WithRouterProps {
     location: ReturnType<typeof useLocation>;
@@ -23,21 +26,29 @@ export interface WithRouterProps {
 function ProfileContainer() {
     const dispatch = useDispatch<AppDispatchType>()
     const profile = useSelector((state: AppStateType) => state.profile)
-    const auth = useSelector<AppStateType, AuthType>((state: AppStateType) => state.auth)
-    let { userId = 30118 } = useParams();
+    // const status = useSelector((state: AppStateType) => state.profile.status)
+    // const auth = useSelector<AppStateType, AuthType>((state: AppStateType) => state.auth)
+    let {userId = 30118} = useParams();
 
     useEffect(() => {
         dispatch(getUserProfileInfoTC(+userId))
+        // setTimeout(() => {
+            dispatch(getStatusUserTC(+userId))
+        // },1000)
+
     }, [])
 
     return (
         <>
             <Profile
+                userId={+userId}
                 profile={profile}
-                dispatch={dispatch}/>
+                dispatch={dispatch}
+            />
         </>
     )
 }
+
 function withRouter<Props extends WithRouterProps>(Component: React.ComponentType<Props>) {
     function ComponentWithRouterProp(props: Omit<Props, keyof WithRouterProps>) {
         let location = useLocation();
@@ -56,4 +67,7 @@ function withRouter<Props extends WithRouterProps>(Component: React.ComponentTyp
     return ComponentWithRouterProp;
 }
 
-export default WithAuthRedirect(withRouter(ProfileContainer))
+export default compose<React.ComponentType>(
+    WithAuthRedirect,
+    withRouter
+)(ProfileContainer)

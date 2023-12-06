@@ -7,6 +7,8 @@ import {
 import Users from "./Users";
 import {AppDispatchType, AppStateType} from "../../../redux/redux-store";
 import {connect} from "react-redux";
+import {WithAuthRedirect} from "../../../hoc/withAuthRedirect";
+import {compose} from "redux";
 
 export type UsersType = {
     followed: boolean
@@ -67,6 +69,10 @@ class UsersAPI extends React.Component<PropsType> {
     }
 };
 //
-// WithAuthRedirect
-export const UsersContainer =  connect(mapStateToProps, {toggleActivePageTC, getUsersTC})(UsersAPI)
-// export default UsersAPI
+//
+// const UsersContainer = connect(mapStateToProps, {toggleActivePageTC, getUsersTC})()
+// export default WithAuthRedirect(UsersContainer)
+export default compose<React.ComponentType>(
+    WithAuthRedirect,
+    connect(mapStateToProps, {toggleActivePageTC, getUsersTC})
+)(UsersAPI)

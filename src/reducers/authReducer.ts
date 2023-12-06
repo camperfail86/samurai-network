@@ -13,7 +13,8 @@ let initialState: AuthType = {
     userId: '1',
     email: 'asjn@mail.ru',
     login: '1',
-    isAuth: false
+    isAuth: true
+    // isAuth: false
 }
 
 export type authActionType = setAuthType

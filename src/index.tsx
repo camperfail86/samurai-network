@@ -10,9 +10,7 @@ import {Provider} from "react-redux";
 // const rerender = (state: stateType) => {
 ReactDOM.render(
     <Provider store={store}>
-        <App
-             // dispatch={store.dispatch.bind(store)}
-        />
+        <App/>
     </Provider>
     , document.getElementById('root')
 )

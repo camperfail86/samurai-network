@@ -37,23 +37,16 @@ function Dialogs() {
     const friends = useSelector<AppStateType, FriendsType[]>(state => state.friends)
     const messages = useSelector<AppStateType, messageObjType>(state => state.messages)
     const onClickHandler = () => {
-        // props.dispatch(addMessageAC(props.messages.newMessage))
         dispatch(addMessageAC(messages.newMessage))
-        // props.dispatch(rerenderMessageAC(''))
         dispatch(rerenderMessageAC(''))
     }
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        // props.dispatch(rerenderMessageAC(e.currentTarget.value))
         dispatch(rerenderMessageAC(e.currentTarget.value))
     }
     let inputRef = createRef<HTMLInputElement>()
-    // let messagesItems = props.messages.messages.map((m) => <Message key={m.id} message={m.message} id={m.id}/>)
     let messagesItems = messages.messages.map((m) => <Message key={m.id} message={m.message} id={m.id}/>)
-    // let dialogs = props.friends.map((f) => <DialogItem key={f.id} name={f.name} id={f.id}/>)
     let dialogs = friends.map((f) => <DialogItem key={f.id} name={f.name} id={f.id}/>)
-
-    // if (!props.auth.isAuth) {return <Navigate to='/login'/>}
 
     return (
         <div className={style.dialogs}>

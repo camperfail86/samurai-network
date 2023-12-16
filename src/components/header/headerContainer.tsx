@@ -1,16 +1,15 @@
 import React from "react";
 import {Header} from "./header";
-import axios from "axios";
 import {connect} from "react-redux";
-import {AuthType, PropsSetAuthProps, setAuthAC, setAuthTC} from "../../reducers/authReducer";
+import {AuthType, setAuthTC} from "../../reducers/authReducer";
 import {AppStateType} from "../../redux/redux-store";
 
 type PropsType = mapDispatchToProps & mapStateToPropsType
 
 class HeaderContainer extends React.Component<PropsType> {
-    componentDidMount() {
-        this.props.setAuthTC()
-    }
+    // componentDidMount() {
+    //     this.props.setAuthTC()
+    // }
 
     render() {
         return (

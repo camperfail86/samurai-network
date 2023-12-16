@@ -1,21 +1,25 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import {Navbar} from "./components/navbar/navbar";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 import News from "./components/main/news/news";
 import Dialogs from "./components/main/dialogs/dialogs";
 import Music from "./components/main/music/music";
 import Settings from "./components/main/settings/settings";
-import { postsReduceType} from "./reducers/postsReducer";
+import {postsReduceType} from "./reducers/postsReducer";
 import {MessageActionType, messageObjType} from "./reducers/messageReducer";
 import UsersContainer from "./components/main/users/UsersAPI";
 import {InitStateType, UserActionType} from './reducers/usersReducer';
 import ProfileContainer from "./components/main/profile/ProfileContainer";
 import {addProfileInfoType, ProfileType} from "./reducers/profileReducer";
-import {useSelector} from "react-redux";
-import {AppStateType} from "./redux/redux-store";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatchType, AppStateType} from "./redux/redux-store";
 import {HeaderContainerConnect} from "./components/header/headerContainer";
 import {Login} from "./components/login/login";
+import {setAuthTC} from "./reducers/authReducer";
+import {initializeTC} from "./reducers/appReducer";
+import s from "./components/main/users/users.module.css";
+import {initializedSelector, stateSelector} from "./selectors/selectors";
 
 export type ActionType = MessageActionType | postsReduceType | UserActionType | addProfileInfoType
 
@@ -55,26 +59,36 @@ export const config = {
         "API-KEY": "8bf529cc-e7bb-4c13-ad05-c2e0207800f3"
     }
 }
+
 function App() {
-    const state = useSelector((state: AppStateType) => state)
+    const state = useSelector(stateSelector)
+    const dispatch = useDispatch<AppDispatchType>()
+    const initialized = useSelector(initializedSelector)
+
+    useEffect(() => {
+        dispatch(initializeTC())
+    }, []);
+
+    if (!initialized) {
+        return <div className={s.loader}></div>
+    }
+
     return (
-        <BrowserRouter>
-            <div className="wrapper">
-                <HeaderContainerConnect/>
-                <Navbar friends={state.friends}/>
-                <main className="main">
-                    <Routes>
-                        <Route path="/profile/:userId?" element={<ProfileContainer/>}/>
-                        <Route path="/dialogs/*" element={<Dialogs/>}/>
-                        <Route path="/news" element={<News/>}/>
-                        <Route path="/users" element={<UsersContainer/>}/>
-                        <Route path="/music" element={<Music />}/>
-                        <Route path="/settings" element={<Settings />}/>
-                        <Route path="/login" element={<Login />}></Route>
-                    </Routes>
-                </main>
-            </div>
-        </BrowserRouter>
+        <div className="wrapper">
+            <HeaderContainerConnect/>
+            <Navbar friends={state.friends}/>
+            <main className="main">
+                <Routes>
+                    <Route path="/profile/:userId?" element={<ProfileContainer/>}/>
+                    <Route path="/dialogs/*" element={<Dialogs/>}/>
+                    <Route path="/news" element={<News/>}/>
+                    <Route path="/users" element={<UsersContainer/>}/>
+                    <Route path="/music" element={<Music/>}/>
+                    <Route path="/settings" element={<Settings/>}/>
+                    <Route path="/login" element={<Login/>}></Route>
+                </Routes>
+            </main>
+        </div>
     );
 }
 

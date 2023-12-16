@@ -61,18 +61,13 @@ class UsersAPI extends React.Component<PropsType> {
                         pageSize={this.props.usersInit.pageSize}
                         users={this.props.usersInit.users}
                         activePage={this.props.usersInit.activePage}
-                        // dispatch={this.props.dispatch}
                         onClickHandler={this.onClickHandler}
                     />}
             </>
         )
     }
 };
-//
-//
-// const UsersContainer = connect(mapStateToProps, {toggleActivePageTC, getUsersTC})()
-// export default WithAuthRedirect(UsersContainer)
 export default compose<React.ComponentType>(
-    WithAuthRedirect,
+    // WithAuthRedirect,
     connect(mapStateToProps, {toggleActivePageTC, getUsersTC})
 )(UsersAPI)

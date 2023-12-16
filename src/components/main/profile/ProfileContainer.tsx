@@ -16,6 +16,7 @@ import {WithAuthRedirect} from "../../../hoc/withAuthRedirect";
 import {compose} from "redux";
 import {profileApi} from "../../../api/profile-api";
 import s from "../users/users.module.css";
+import {profileSelector} from "../../../selectors/selectors";
 
 export interface WithRouterProps {
     location: ReturnType<typeof useLocation>;
@@ -25,16 +26,12 @@ export interface WithRouterProps {
 
 function ProfileContainer() {
     const dispatch = useDispatch<AppDispatchType>()
-    const profile = useSelector((state: AppStateType) => state.profile)
-    // const status = useSelector((state: AppStateType) => state.profile.status)
-    // const auth = useSelector<AppStateType, AuthType>((state: AppStateType) => state.auth)
+    const profile = useSelector(profileSelector)
     let {userId = 30118} = useParams();
 
     useEffect(() => {
         dispatch(getUserProfileInfoTC(+userId))
-        // setTimeout(() => {
-            dispatch(getStatusUserTC(+userId))
-        // },1000)
+        dispatch(getStatusUserTC(+userId))
 
     }, [])
 
@@ -68,6 +65,6 @@ function withRouter<Props extends WithRouterProps>(Component: React.ComponentTyp
 }
 
 export default compose<React.ComponentType>(
-    WithAuthRedirect,
+    // WithAuthRedirect,
     withRouter
 )(ProfileContainer)

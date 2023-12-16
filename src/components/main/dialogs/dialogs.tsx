@@ -8,6 +8,8 @@ import {AuthType} from "../../../reducers/authReducer";
 import {WithAuthRedirect} from "../../../hoc/withAuthRedirect";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatchType, AppStateType} from "../../../redux/redux-store";
+import {SubmitHandler, useForm} from "react-hook-form";
+import {friendsSelector, messagesSelector} from "../../../selectors/selectors";
 
 export type DialogsPropsType = {
     friends: FriendsType[]
@@ -34,8 +36,8 @@ function DialogItem(props: DialogItemType) {
 // props: DialogsPropsType
 function Dialogs() {
     const dispatch = useDispatch<AppDispatchType>()
-    const friends = useSelector<AppStateType, FriendsType[]>(state => state.friends)
-    const messages = useSelector<AppStateType, messageObjType>(state => state.messages)
+    const friends = useSelector<AppStateType, FriendsType[]>(friendsSelector)
+    const messages = useSelector<AppStateType, messageObjType>(messagesSelector)
     const onClickHandler = () => {
         dispatch(addMessageAC(messages.newMessage))
         dispatch(rerenderMessageAC(''))
@@ -47,6 +49,15 @@ function Dialogs() {
     let inputRef = createRef<HTMLInputElement>()
     let messagesItems = messages.messages.map((m) => <Message key={m.id} message={m.message} id={m.id}/>)
     let dialogs = friends.map((f) => <DialogItem key={f.id} name={f.name} id={f.id}/>)
+
+    const { register, handleSubmit } = useForm(
+        {
+            defaultValues: {
+                newMessage: '',
+            },
+        }
+    )
+    const onSubmit = (data: any) => console.log(data)
 
     return (
         <div className={style.dialogs}>
@@ -60,8 +71,10 @@ function Dialogs() {
                 </Routes>
             </div>
             {/*<input type="text" value={props.messages.newMessage} onChange={onChangeHandler}/>*/}
-            <input type="text" value={messages.newMessage} onChange={onChangeHandler}/>
-            <button onClick={onClickHandler}>Добавить сообщение</button>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <input {...register('newMessage')} value={messages.newMessage} onChange={onChangeHandler}/>
+                <input type="submit" onClick={onClickHandler}/>
+            </form>
         </div>
     )
 }

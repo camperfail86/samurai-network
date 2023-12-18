@@ -34,7 +34,7 @@ function DialogItem(props: DialogItemType) {
     )
 }
 // props: DialogsPropsType
-function Dialogs() {
+const Dialogs = React.memo(() => {
     const dispatch = useDispatch<AppDispatchType>()
     const friends = useSelector<AppStateType, FriendsType[]>(friendsSelector)
     const messages = useSelector<AppStateType, messageObjType>(messagesSelector)
@@ -77,6 +77,6 @@ function Dialogs() {
             </form>
         </div>
     )
-}
+})
 
 export default WithAuthRedirect(Dialogs);

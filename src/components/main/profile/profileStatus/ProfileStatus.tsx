@@ -1,16 +1,52 @@
-import React, {useState} from 'react';
-import {useSelector} from "react-redux";
+import React, {ChangeEvent, useEffect, useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import {getStatusUserTC, setStatusUserTC} from "../../../../reducers/profileReducer";
+import {stateSelector, statusSelector} from "../../../../selectors/selectors";
 
-export const ProfileStatus = () => {
+type ProfileType = {
+    id: number
+    mainStatus: string | null
+}
+
+export const ProfileStatus = ({id, mainStatus}: ProfileType) => {
     const [editMode, setEditMode] = useState(false)
+    // const mainStatus = useSelector(statusSelector)
+    const [status, setStatus] = useState(mainStatus)
+    const dispatch = useDispatch()
+
+    const activateEditMode = () => {
+        setEditMode(true)
+    }
+
+    const disActivateEditMode = () => {
+        setEditMode(false)
+        dispatch(setStatusUserTC(status))
+    }
+
+    const onStatusChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setStatus(e.currentTarget.value)
+    }
+
+    useEffect(() => {
+        setStatus(mainStatus)
+    }, [mainStatus]);
+
     return (
         <div>
-            <div>
-                <span>text</span>
-            </div>
-            <div>
-                <input type="text"/>
-            </div>
+            {!editMode ?
+                <div>
+                        <span onDoubleClick={activateEditMode}>
+                            {mainStatus || '123'}
+                        </span>
+                </div>
+                :
+                <div>
+                    <input onChange={onStatusChange}
+                           autoFocus={true} value={'' + status}
+                           onBlur={disActivateEditMode}
+                           type="text"/>
+                </div>
+            }
         </div>
     );
 };

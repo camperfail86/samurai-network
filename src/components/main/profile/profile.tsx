@@ -64,7 +64,8 @@ export function Profile(props: ProfilePropsType) {
                         <img className={s.avatar} src={props.profile.photos.small ? props.profile.photos.small : ''}
                              alt=""/>
                         <span>{props.profile.fullName}</span>
-                        <ProfileStatusClass status={props.profile.status} id={props.profile.userId} dispatch={dispatch}/>
+                        {/*<ProfileStatusClass status={props.profile.status} id={props.profile.userId} dispatch={dispatch}/>*/}
+                        <ProfileStatus mainStatus={props.profile.status} id={props.profile.userId}/>
                     </>
                     : <div className={s.loader}></div>}
 

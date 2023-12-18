@@ -42,7 +42,7 @@ type mapStateToPropsType = {
 type PropsType = mapStateToPropsType & mapDispatchToPropsType
 // UsersAPITypeProps, {}
 
-class UsersAPI extends React.Component<PropsType> {
+class UsersAPI extends React.PureComponent<PropsType> {
     componentDidMount() {
         this.props.getUsersTC(this.props.usersInit.activePage, this.props.usersInit.pageSize)
     }

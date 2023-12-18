@@ -46,7 +46,7 @@ let initialState: ProfileType = {
         "small": null,
         "large": null
     },
-    "status": null
+    "status": ''
 }
 
 export type ProfileActionType = addProfileInfoType | GetStatusUserType

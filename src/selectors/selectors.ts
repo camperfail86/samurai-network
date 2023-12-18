@@ -2,6 +2,7 @@ import {AppStateType} from "../redux/redux-store";
 
 export const initializedSelector = (state: AppStateType) => state.app.initialized
 export const stateSelector = (state: AppStateType) => state
+export const statusSelector = (state: AppStateType) => state.profile.status
 export const profileSelector = (state: AppStateType) => state.profile
 export const authSelector = (state: AppStateType)=> state.auth.isAuth
 export const postsSelector = (state: AppStateType) => state.posts

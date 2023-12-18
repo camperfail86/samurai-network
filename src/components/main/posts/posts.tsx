@@ -7,6 +7,7 @@ type PostsPropsType = {
 }
 
 export function Posts(props: PostsPropsType) {
+    console.log('render posts')
     return (
         <>
             {props.posts.map(p => <Post key={p.id} likes={p.likes} text={p.text} id={p.id}/>)}

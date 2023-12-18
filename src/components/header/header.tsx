@@ -11,7 +11,7 @@ type HeaderPropsType = {
     auth: AuthType
 }
 
-export const Header = ({auth}: HeaderPropsType) => {
+export const Header = React.memo(({auth}: HeaderPropsType) => {
     const isAuth = useSelector(authSelector)
     const dispatch = useDispatch<AppDispatchType>()
     const onCLickHandler = () => {
@@ -27,4 +27,4 @@ export const Header = ({auth}: HeaderPropsType) => {
                 : <span className={style.text}>ВЫ НЕ АВТОРИЗИРОВАНЫ</span>}
         </header>
     )
-}
+})

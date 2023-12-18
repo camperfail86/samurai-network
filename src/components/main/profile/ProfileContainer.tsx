@@ -24,7 +24,7 @@ export interface WithRouterProps {
     navigate: ReturnType<typeof useNavigate>;
 }
 
-function ProfileContainer() {
+const ProfileContainer = React.memo(() => {
     const dispatch = useDispatch<AppDispatchType>()
     const profile = useSelector(profileSelector)
     let {userId = 30118} = useParams();
@@ -44,7 +44,7 @@ function ProfileContainer() {
             />
         </>
     )
-}
+})
 
 function withRouter<Props extends WithRouterProps>(Component: React.ComponentType<Props>) {
     function ComponentWithRouterProp(props: Omit<Props, keyof WithRouterProps>) {

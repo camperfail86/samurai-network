@@ -21,7 +21,7 @@ export type UsersPropsType = {
     // isDisabled: boolean
 }
 
-const Users = (props: UsersPropsType) => {
+const Users = React.memo((props: UsersPropsType) => {
 
     const dispatch = useDispatch<AppDispatchType>()
     let pages = []
@@ -63,6 +63,6 @@ const Users = (props: UsersPropsType) => {
             }
         </div>
     );
-};
+});
 
 export default Users;

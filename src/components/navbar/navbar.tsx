@@ -2,12 +2,13 @@ import style from './navbar.module.css';
 import {BrowserRouter, NavLink} from 'react-router-dom';
 import {FriendsType} from "../../App";
 import {Friends} from "./friends/friends";
+import React from "react";
 
 export type FriendsPropsType = {
     friends: FriendsType[]
 }
 
-export const Navbar = (props: FriendsPropsType) => {
+export const Navbar = React.memo((props: FriendsPropsType) => {
     return (
         <nav className={style.nav}>
             <ul className={style.list}>
@@ -42,5 +43,5 @@ export const Navbar = (props: FriendsPropsType) => {
             </div>
         </nav>
     )
-}
+})
 

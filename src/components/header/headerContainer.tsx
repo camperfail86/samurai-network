@@ -6,7 +6,7 @@ import {AppStateType} from "../../redux/redux-store";
 
 type PropsType = mapDispatchToProps & mapStateToPropsType
 
-class HeaderContainer extends React.Component<PropsType> {
+class HeaderContainer extends React.PureComponent<PropsType> {
     // componentDidMount() {
     //     this.props.setAuthTC()
     // }

@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import './App.css';
 import {Navbar} from "./components/navbar/navbar";
-import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
+import { Route, Routes} from "react-router-dom";
 import News from "./components/main/news/news";
 import Dialogs from "./components/main/dialogs/dialogs";
 import Music from "./components/main/music/music";
@@ -16,7 +16,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppDispatchType, AppStateType} from "./redux/redux-store";
 import {HeaderContainerConnect} from "./components/header/headerContainer";
 import {Login} from "./components/login/login";
-import {setAuthTC} from "./reducers/authReducer";
 import {initializeTC} from "./reducers/appReducer";
 import s from "./components/main/users/users.module.css";
 import {initializedSelector, stateSelector} from "./selectors/selectors";

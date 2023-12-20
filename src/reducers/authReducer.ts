@@ -29,7 +29,7 @@ export type authActionType = setAuthType
 
 export const authReducer = (state = initialState, action: authActionType) => {
     switch (action.type) {
-        case "SET-USER-DATA":
+        case "AUTH/SET-USER-DATA":
             return {
                 ...state,
                 ...action.payload,
@@ -43,12 +43,12 @@ export type setAuthType = ReturnType<typeof setAuthAC>
 export type PropsSetAuthProps = string | null
 export const setAuthAC = (userId: PropsSetAuthProps, email: PropsSetAuthProps, login: PropsSetAuthProps, isAuth: boolean) => {
     return {
-        type: 'SET-USER-DATA',
+        type: 'AUTH/SET-USER-DATA',
         payload: {userId, email, login, isAuth}
     } as const
 }
 
-export const setAuthTC = () => (dispatch: Dispatch) => {
+export const setAuthTC = () => async (dispatch: Dispatch) => {
     return authApi.setAuth()
         .then((res) => {
                 if (res.data.resultCode === 0) {
@@ -59,21 +59,19 @@ export const setAuthTC = () => (dispatch: Dispatch) => {
         )
 }
 
-export const loginTC = (data: DataTypeLogin) => (dispatch: AppDispatchType) => {
-    authApi.login(data).then((res) => {
-        if (res.data.resultCode === 0) {
-            dispatch(setAuthTC())
-            dispatch(setErrorAC(null))
-        } else {
-            dispatch(setErrorAC(res.data.messages[0]))
-        }
-    })
+export const loginTC = (data: DataTypeLogin) => async (dispatch: AppDispatchType) => {
+    const res = await authApi.login(data)
+    if (res.data.resultCode === 0) {
+        dispatch(setAuthTC())
+        dispatch(setErrorAC(null))
+    } else {
+        dispatch(setErrorAC(res.data.messages[0]))
+    }
 }
 
-export const logoutTC = () => (dispatch: Dispatch) => {
-    authApi.logout().then((res) => {
-        if (res.data.resultCode === 0) {
-            dispatch(setAuthAC(null, null, null, false))
-        }
-    })
+export const logoutTC = () => async (dispatch: Dispatch) => {
+    const res = await authApi.logout()
+    if (res.data.resultCode === 0) {
+        dispatch(setAuthAC(null, null, null, false))
+    }
 }

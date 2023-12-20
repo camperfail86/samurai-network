@@ -30,21 +30,28 @@ let initialState: InitStateType = {
 
 export const usersReducer = (state = initialState, action: UserActionType) => {
     switch (action.type) {
-        case "TOGGLE-FETCHING":
+        case "USERS/TOGGLE-FETCHING":
             return {...state, isFetching: action.payload.isFetching}
-        case "SET-COUNT":
+        case "USERS/SET-COUNT":
             return {...state, totalUsersCount: action.payload.count}
-        case "TOGGLE-PAGE":
+        case "USERS/TOGGLE-PAGE":
             return {...state, activePage: action.payload.id}
-        case "ADD-USERS":
+        case "USERS/ADD-USERS":
             return {...state, users: action.payload.array.map(u => u)}
-        case "FOLLOW-UNFOLLOW":
-            return {...state, users: state.users.map(u => u.id === action.payload.userId ? {...u, followed: action.payload.boolean} : u)}
-        case "TOGGLE-DISABLED": {
-            return {...state,
+        case "USERS/FOLLOW-UNFOLLOW":
+            return {
+                ...state,
+                users: state.users.map(u => u.id === action.payload.userId ? {
+                    ...u,
+                    followed: action.payload.boolean
+                } : u)
+            }
+        case "USERS/TOGGLE-DISABLED": {
+            return {
+                ...state,
                 isDisabledArray: action.payload.isDisabled
                     ? [...state.isDisabledArray, action.payload.userId]
-                    : state.isDisabledArray.filter(id => id != action.payload.userId )
+                    : state.isDisabledArray.filter(id => id != action.payload.userId)
             }
         }
         default:
@@ -54,7 +61,7 @@ export const usersReducer = (state = initialState, action: UserActionType) => {
 export type FollowUserType = ReturnType<typeof followUserAC>
 export const followUserAC = (boolean: boolean, userId: number) => {
     return {
-        type: 'FOLLOW-UNFOLLOW',
+        type: 'USERS/FOLLOW-UNFOLLOW',
         payload: {boolean, userId}
     } as const
 }
@@ -62,7 +69,7 @@ export const followUserAC = (boolean: boolean, userId: number) => {
 export type AddUsersType = ReturnType<typeof addUsersAC>
 export const addUsersAC = (array: UsersAPITypeProps[]) => {
     return {
-        type: 'ADD-USERS',
+        type: 'USERS/ADD-USERS',
         payload: {array}
     } as const
 }
@@ -70,7 +77,7 @@ export const addUsersAC = (array: UsersAPITypeProps[]) => {
 export type ToggleActivePage = ReturnType<typeof ToggleActivePageAC>
 export const ToggleActivePageAC = (id: number) => {
     return {
-        type: 'TOGGLE-PAGE',
+        type: 'USERS/TOGGLE-PAGE',
         payload: {id}
     } as const
 }
@@ -78,7 +85,7 @@ export const ToggleActivePageAC = (id: number) => {
 export type setTotalCountType = ReturnType<typeof setTotalCountAC>
 export const setTotalCountAC = (count: number) => {
     return {
-        type: 'SET-COUNT',
+        type: 'USERS/SET-COUNT',
         payload: {count}
     } as const
 }
@@ -87,7 +94,7 @@ export const setTotalCountAC = (count: number) => {
 export type ToggleFetchingType = ReturnType<typeof toggleFetchingAC>
 export const toggleFetchingAC = (isFetching: boolean) => {
     return {
-        type: 'TOGGLE-FETCHING',
+        type: 'USERS/TOGGLE-FETCHING',
         payload: {isFetching}
     } as const
 }
@@ -95,44 +102,36 @@ export const toggleFetchingAC = (isFetching: boolean) => {
 export type ToggleDisabledType = ReturnType<typeof toggleDisabledAC>
 export const toggleDisabledAC = (isDisabled: boolean, userId: number) => {
     return {
-        type: 'TOGGLE-DISABLED',
+        type: 'USERS/TOGGLE-DISABLED',
         payload: {isDisabled, userId}
     } as const
 }
 
-export const getUsersTC = (activePage: number, pageSize: number) => (dispatch: Dispatch) => {
+export const getUsersTC = (activePage: number, pageSize: number) => async (dispatch: Dispatch) => {
     dispatch(toggleFetchingAC(true))
-    userApi.getUsers(activePage, pageSize)
-        .then(res => {
-            dispatch(addUsersAC(res.data.items))
-            // dispatch(setTotalCountAC(res.data.totalCount))
-            dispatch(toggleFetchingAC(false))
-        })
+    const res = await userApi.getUsers(activePage, pageSize)
+    dispatch(addUsersAC(res.data.items))
+    // dispatch(setTotalCountAC(res.data.totalCount))
+    dispatch(toggleFetchingAC(false))
 }
 
-export const toggleActivePageTC = (p: number, pageSize: number) => (dispatch: Dispatch) => {
+export const toggleActivePageTC = (p: number, pageSize: number) => async (dispatch: Dispatch) => {
     dispatch(ToggleActivePageAC(p))
     dispatch(toggleFetchingAC(true))
-    userApi.getUsers(p, pageSize)
-        .then(res => {
-            dispatch(addUsersAC(res.data.items))
-            // this.props.dispatch(setTotalCountAC(res.data.totalCount))
-            dispatch(toggleFetchingAC(false))
-        })
+    const res = await userApi.getUsers(p, pageSize)
+    dispatch(addUsersAC(res.data.items))
+    // this.props.dispatch(setTotalCountAC(res.data.totalCount))
+    dispatch(toggleFetchingAC(false))
 }
 
-export const followAndUnfollowTC = (u: UsersType) => (dispatch: Dispatch) => {
+export const followAndUnfollowTC = (u: UsersType) => async (dispatch: Dispatch) => {
     dispatch(toggleDisabledAC(true, u.id))
-    u.followed ?
-        userApi.unfollow(u.id)
-            .then((res) => {
-                    dispatch(followUserAC(false, u.id))
-                    dispatch(toggleDisabledAC(false, u.id))
-                }
-            ) :
-        userApi.follow(u.id)
-            .then((res) => {
-                dispatch(followUserAC(true, u.id))
-                dispatch(toggleDisabledAC(false, u.id))
-            })
+    const res = await userApi.unfollow(u.id)
+    if (u.followed) {
+        dispatch(followUserAC(false, u.id));
+        dispatch(toggleDisabledAC(false, u.id))
+    } else {
+        dispatch(followUserAC(true, u.id))
+        dispatch(toggleDisabledAC(false, u.id))
+    }
 }

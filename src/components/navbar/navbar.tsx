@@ -8,7 +8,7 @@ export type FriendsPropsType = {
     friends: FriendsType[]
 }
 
-export const Navbar = React.memo((props: FriendsPropsType) => {
+export const Navbar = React.memo(({friends}: FriendsPropsType) => {
     return (
         <nav className={style.nav}>
             <ul className={style.list}>
@@ -39,7 +39,7 @@ export const Navbar = React.memo((props: FriendsPropsType) => {
             </ul>
             <div>
                 <h2 className={style.friends}>Friends</h2>
-                <Friends friends={props.friends}/>
+                <Friends friends={friends}/>
             </div>
         </nav>
     )

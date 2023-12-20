@@ -6,9 +6,7 @@ import {DataTypeLogin, loginTC} from "../../reducers/authReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "../../redux/redux-store";
 import {Navigate} from "react-router-dom";
-type IFormInput = {
-    // firstName: string
-}
+
 
 
 export const Login = () => {

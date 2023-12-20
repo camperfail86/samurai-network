@@ -54,9 +54,9 @@ export type ProfileActionType = addProfileInfoType | GetStatusUserType
 
 export const profileReducer = (state = initialState, action: ProfileActionType) => {
     switch (action.type) {
-        case "ADD-INFO-PROFILE":
+        case "PROFILE/ADD-INFO-PROFILE":
             return {...action.payload.profileInfo}
-        case "GET-STATUS": {
+        case "PROFILE/GET-STATUS": {
             return {...state, status: action.payload.status}
         }
         default:
@@ -67,7 +67,7 @@ export const profileReducer = (state = initialState, action: ProfileActionType) 
 export type addProfileInfoType = ReturnType<typeof addProfileInfoAC>
 export const addProfileInfoAC = (profileInfo: ProfileType) => {
     return {
-        type: 'ADD-INFO-PROFILE',
+        type: 'PROFILE/ADD-INFO-PROFILE',
         payload: {profileInfo}
     } as const
 }
@@ -75,27 +75,22 @@ export const addProfileInfoAC = (profileInfo: ProfileType) => {
 export type GetStatusUserType = ReturnType<typeof getStatusUserAC>
 export const getStatusUserAC = (status: string | null) => {
     return {
-        type: 'GET-STATUS',
+        type: 'PROFILE/GET-STATUS',
         payload: {status}
     } as const
 }
 
-export const getUserProfileInfoTC = (id: number) => (dispatch: Dispatch) => {
-    profileApi.getProfileInfo(id).then((res) =>
-        dispatch(addProfileInfoAC(res.data))
-    )
+export const getUserProfileInfoTC = (id: number) => async (dispatch: Dispatch) => {
+    const res = await profileApi.getProfileInfo(id)
+    dispatch(addProfileInfoAC(res.data))
 }
 
-export const getStatusUserTC = (id: number) => (dispatch: Dispatch) => {
-    profileApi.getStatus(id).then((res) => {
-            dispatch(getStatusUserAC(res.data))
-        }
-    )
+export const getStatusUserTC = (id: number) => async (dispatch: Dispatch) => {
+    const res = await profileApi.getStatus(id)
+    dispatch(getStatusUserAC(res.data))
 }
 
-export const setStatusUserTC = (status: string | null) => (dispatch: Dispatch) => {
-    profileApi.updateStatus(status).then((res) => {
-            dispatch(getStatusUserAC(status))
-        }
-    )
+export const setStatusUserTC = (status: string | null) => async (dispatch: Dispatch) => {
+    const res = await profileApi.updateStatus(status)
+    dispatch(getStatusUserAC(status))
 }

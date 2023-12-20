@@ -26,10 +26,10 @@ export type MessageActionType = rerenderMessageType | addMessageType
 
 export const messageReducer = (state  = initialState, action: MessageActionType) => {
     switch (action.type) {
-        case 'ADD-MESSAGE':
+        case 'MESSAGE/ADD-MESSAGE':
             const newMessage = {message: action.payload.newMessage, id: 1}
             return {...state, messages: [...state.messages, newMessage]}
-        case "RERENDER-MESSAGE":
+        case "MESSAGE/RERENDER-MESSAGE":
             return {...state, newMessage: action.payload.newSymbolMessage}
         default: return state
     }
@@ -38,7 +38,7 @@ export const messageReducer = (state  = initialState, action: MessageActionType)
 export type addMessageType = ReturnType<typeof addMessageAC>
 export const addMessageAC = (newMessage: string) => {
     return {
-        type: 'ADD-MESSAGE',
+        type: 'MESSAGE/ADD-MESSAGE',
         payload: {
             newMessage
         }
@@ -48,7 +48,7 @@ export const addMessageAC = (newMessage: string) => {
 export type rerenderMessageType = ReturnType<typeof rerenderMessageAC>
 export const rerenderMessageAC = (newSymbolMessage: string) => {
     return {
-        type: 'RERENDER-MESSAGE',
+        type: 'MESSAGE/RERENDER-MESSAGE',
         payload: {
             newSymbolMessage
         }

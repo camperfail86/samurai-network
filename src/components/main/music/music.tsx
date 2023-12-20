@@ -1,15 +1,8 @@
 import style from "./music.module.css";
-import {AuthType} from "../../../reducers/authReducer";
-import {Navigate} from "react-router-dom";
 import React from "react";
 import {WithAuthRedirect} from "../../../hoc/withAuthRedirect";
 
-// type PropsType = {
-//   auth: AuthType
-// }
-
 function Music() {
-  // if (!props.auth.isAuth) {return <Navigate to='/login'/>}
   return (
     <>
       <ul className={style.list}>

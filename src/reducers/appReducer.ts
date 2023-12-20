@@ -17,10 +17,10 @@ export type AppAllActionType = SetErrorType | SetInitializedType
 
 export const appReducer = (state = initialState, action: AppAllActionType) => {
     switch (action.type) {
-        case "SET-ERROR": {
+        case "APP/SET-ERROR": {
             return {...state, error: action.payload.error}
         }
-        case "SET-INITIALIZED": {
+        case "APP/SET-INITIALIZED": {
             return {...state, initialized: action.payload.initialized}
         }
         default:
@@ -31,7 +31,7 @@ export const appReducer = (state = initialState, action: AppAllActionType) => {
 export type SetErrorType = ReturnType<typeof setErrorAC>
 export const setErrorAC = (error: string | null) => {
     return {
-        type: 'SET-ERROR',
+        type: 'APP/SET-ERROR',
         payload: {error}
     } as const
 }
@@ -39,7 +39,7 @@ export const setErrorAC = (error: string | null) => {
 export type SetInitializedType = ReturnType<typeof setInitializedAC>
 export const setInitializedAC = (initialized: boolean) => {
     return {
-        type: 'SET-INITIALIZED',
+        type: 'APP/SET-INITIALIZED',
         payload: {initialized}
     } as const
 }

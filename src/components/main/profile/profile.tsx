@@ -12,23 +12,17 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import {postsSelector} from "../../../selectors/selectors";
 
 export type ProfilePropsType = {
-    // posts: PostsType[]
-    dispatch: (action: ActionType) => void
-    // newPostElement: RefObject<HTMLTextAreaElement>
-    // onClickHandler:() => void
     profile: ProfileType
-
     userId: number
 }
 
-export function Profile(props: ProfilePropsType) {
+export function Profile({userId, profile}: ProfilePropsType) {
 
     const posts = useSelector(postsSelector)
-    // let newPostElement = useRef<HTMLTextAreaElement>(null)
     const dispatch = useDispatch<AppDispatchType>()
 
     useEffect(() => {
-        dispatch(getStatusUserTC(props.userId))
+        dispatch(getStatusUserTC(userId))
     }, []);
 
     // const onClickHandler = () => {
@@ -49,7 +43,7 @@ export function Profile(props: ProfilePropsType) {
     const onSubmit = (data: any) => {
         console.log(data)
         if (data.newPostElement) {
-            props.dispatch(postsReducerAC(data.newPostElement))
+            dispatch(postsReducerAC(data.newPostElement))
             data.newPostElement = ''
         }
     }
@@ -60,12 +54,11 @@ export function Profile(props: ProfilePropsType) {
                 ПРОФИЛЬ
             </div>
             <div>
-                {props.profile ? <>
-                        <img className={s.avatar} src={props.profile.photos.small ? props.profile.photos.small : ''}
+                {profile ? <>
+                        <img className={s.avatar} src={profile.photos.small ? profile.photos.small : ''}
                              alt=""/>
-                        <span>{props.profile.fullName}</span>
-                        {/*<ProfileStatusClass status={props.profile.status} id={props.profile.userId} dispatch={dispatch}/>*/}
-                        <ProfileStatus mainStatus={props.profile.status} id={props.profile.userId}/>
+                        <span>{profile.fullName}</span>
+                        <ProfileStatus mainStatus={profile.status} id={profile.userId}/>
                     </>
                     : <div className={s.loader}></div>}
 
@@ -80,10 +73,8 @@ export function Profile(props: ProfilePropsType) {
                             }
                         }
                     })}></textarea>
-                    {/*ref={newPostElement}*/}
                     <input type='submit' value='+'/>
                     <span> {errors.newPostElement && <span>{errors.newPostElement.message}</span>}</span>
-                    {/*onClick={onClickHandler}*/}
                 </form>
             </div>
         </>

@@ -7,7 +7,6 @@ import {
 import Users from "./Users";
 import {AppDispatchType, AppStateType} from "../../../redux/redux-store";
 import {connect} from "react-redux";
-import {WithAuthRedirect} from "../../../hoc/withAuthRedirect";
 import {compose} from "redux";
 
 export type UsersType = {
@@ -40,7 +39,6 @@ type mapStateToPropsType = {
 }
 
 type PropsType = mapStateToPropsType & mapDispatchToPropsType
-// UsersAPITypeProps, {}
 
 class UsersAPI extends React.PureComponent<PropsType> {
     componentDidMount() {
@@ -68,6 +66,5 @@ class UsersAPI extends React.PureComponent<PropsType> {
     }
 };
 export default compose<React.ComponentType>(
-    // WithAuthRedirect,
     connect(mapStateToProps, {toggleActivePageTC, getUsersTC})
 )(UsersAPI)

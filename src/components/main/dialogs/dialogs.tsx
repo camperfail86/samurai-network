@@ -1,21 +1,18 @@
 import {NavLink, Route, Routes} from 'react-router-dom';
-import { Navigate } from "react-router-dom";
 import style from './dialogs.module.css';
 import React, {ChangeEvent, createRef} from "react";
 import {ActionType, DialogItemType, FriendsType, MessageType} from "../../../App";
 import {addMessageAC, messageObjType, rerenderMessageAC} from "../../../reducers/messageReducer";
-import {AuthType} from "../../../reducers/authReducer";
 import {WithAuthRedirect} from "../../../hoc/withAuthRedirect";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatchType, AppStateType} from "../../../redux/redux-store";
-import {SubmitHandler, useForm} from "react-hook-form";
+import {useForm} from "react-hook-form";
 import {friendsSelector, messagesSelector} from "../../../selectors/selectors";
 
 export type DialogsPropsType = {
     friends: FriendsType[]
     messages: messageObjType
     dispatch: (action: ActionType) => void
-    // auth: AuthType
 }
 
 function Message(props: MessageType) {
@@ -33,7 +30,7 @@ function DialogItem(props: DialogItemType) {
         </li>
     )
 }
-// props: DialogsPropsType
+
 const Dialogs = React.memo(() => {
     const dispatch = useDispatch<AppDispatchType>()
     const friends = useSelector<AppStateType, FriendsType[]>(friendsSelector)
@@ -70,7 +67,6 @@ const Dialogs = React.memo(() => {
                     <Route path='/2' element={<div>2</div>}/>
                 </Routes>
             </div>
-            {/*<input type="text" value={props.messages.newMessage} onChange={onChangeHandler}/>*/}
             <form onSubmit={handleSubmit(onSubmit)}>
                 <input {...register('newMessage')} value={messages.newMessage} onChange={onChangeHandler}/>
                 <input type="submit" onClick={onClickHandler}/>

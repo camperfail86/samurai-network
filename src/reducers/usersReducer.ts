@@ -21,7 +21,7 @@ export type InitStateType = {
 
 let initialState: InitStateType = {
     users: [],
-    totalUsersCount: 330,
+    totalUsersCount: 30,
     pageSize: 5,
     activePage: 1,
     isFetching: true,
@@ -111,7 +111,7 @@ export const getUsersTC = (activePage: number, pageSize: number) => async (dispa
     dispatch(toggleFetchingAC(true))
     const res = await userApi.getUsers(activePage, pageSize)
     dispatch(addUsersAC(res.data.items))
-    // dispatch(setTotalCountAC(res.data.totalCount))
+    dispatch(setTotalCountAC(res.data.totalCount))
     dispatch(toggleFetchingAC(false))
 }
 
@@ -120,7 +120,7 @@ export const toggleActivePageTC = (p: number, pageSize: number) => async (dispat
     dispatch(toggleFetchingAC(true))
     const res = await userApi.getUsers(p, pageSize)
     dispatch(addUsersAC(res.data.items))
-    // this.props.dispatch(setTotalCountAC(res.data.totalCount))
+    dispatch(setTotalCountAC(res.data.totalCount))
     dispatch(toggleFetchingAC(false))
 }
 

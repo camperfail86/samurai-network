@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import './App.css';
 import {Navbar} from "./components/navbar/navbar";
-import { Route, Routes} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import News from "./components/main/news/news";
 import Dialogs from "./components/main/dialogs/dialogs";
 import Music from "./components/main/music/music";
@@ -10,7 +10,6 @@ import {postsReduceType} from "./reducers/postsReducer";
 import {MessageActionType, messageObjType} from "./reducers/messageReducer";
 import UsersContainer from "./components/main/users/UsersAPI";
 import {InitStateType, UserActionType} from './reducers/usersReducer';
-import ProfileContainer from "./components/main/profile/ProfileContainer";
 import {addProfileInfoType, ProfileType} from "./reducers/profileReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatchType, AppStateType} from "./redux/redux-store";
@@ -19,6 +18,8 @@ import {Login} from "./components/login/login";
 import {initializeTC} from "./reducers/appReducer";
 import s from "./components/main/users/users.module.css";
 import {initializedSelector, stateSelector} from "./selectors/selectors";
+
+const ProfileContainer = React.lazy(() => import('./components/main/profile/ProfileContainer'));
 
 export type ActionType = MessageActionType | postsReduceType | UserActionType | addProfileInfoType
 
@@ -73,21 +74,23 @@ function App() {
     }
 
     return (
-        <div className="wrapper">
-            <HeaderContainerConnect/>
-            <Navbar friends={state.friends}/>
-            <main className="main">
-                <Routes>
-                    <Route path="/profile/:userId?" element={<ProfileContainer/>}/>
-                    <Route path="/dialogs/*" element={<Dialogs/>}/>
-                    <Route path="/news" element={<News/>}/>
-                    <Route path="/users" element={<UsersContainer/>}/>
-                    <Route path="/music" element={<Music/>}/>
-                    <Route path="/settings" element={<Settings/>}/>
-                    <Route path="/login" element={<Login/>}></Route>
-                </Routes>
-            </main>
-        </div>
+        <React.Suspense fallback={<div className={s.loader}/>}>
+            <div className="wrapper">
+                <HeaderContainerConnect/>
+                <Navbar friends={state.friends}/>
+                <main className="main">
+                    <Routes>
+                        <Route path="/profile/:userId?" element={<ProfileContainer/>}/>
+                        <Route path="/dialogs/*" element={<Dialogs/>}/>
+                        <Route path="/news" element={<News/>}/>
+                        <Route path="/users" element={<UsersContainer/>}/>
+                        <Route path="/music" element={<Music/>}/>
+                        <Route path="/settings" element={<Settings/>}/>
+                        <Route path="/login" element={<Login/>}></Route>
+                    </Routes>
+                </main>
+            </div>
+        </React.Suspense>
     );
 }
 

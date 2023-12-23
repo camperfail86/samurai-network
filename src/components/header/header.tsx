@@ -19,12 +19,15 @@ export const Header = React.memo(({auth}: HeaderPropsType) => {
     }
     return (
         <header className={style.header}>
-            <img src={''} alt="Логотип."/>
-            {isAuth ? <NavLink onClick={onCLickHandler} to={'/login'}>LOGOUT</NavLink>
-                    : <NavLink to={'/login'}>LOGIN</NavLink>}
             {auth.isAuth
-                ? <span className={style.text}>{auth.login}</span>
+                ?
+                <div>
+                    <div className={style.text}>{auth.login}</div>
+                </div>
                 : <span className={style.text}>ВЫ НЕ АВТОРИЗИРОВАНЫ</span>}
+            {isAuth
+                ? <NavLink className={style.login} onClick={onCLickHandler} to={'/login'}>LOGOUT</NavLink>
+                : <NavLink className={style.login} to={'/login'}>LOGIN</NavLink>}
         </header>
     )
 })

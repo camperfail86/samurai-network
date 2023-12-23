@@ -22,7 +22,7 @@ export type InitStateType = {
 let initialState: InitStateType = {
     users: [],
     totalUsersCount: 30,
-    pageSize: 5,
+    pageSize: 12,
     activePage: 1,
     isFetching: true,
     isDisabledArray: []

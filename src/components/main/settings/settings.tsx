@@ -4,7 +4,8 @@ import {WithAuthRedirect} from "../../../hoc/withAuthRedirect";
 const Settings = () => {
     return (
         <>
-            <div>Настройки приватности</div>
+            <div>Изменить тему</div>
+            <button>click</button>
         </>
     )
 }

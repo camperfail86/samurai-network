@@ -10,6 +10,25 @@
     margin-right: 2px;
 }
 
+.usersList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+.userName {
+    display: flex;
+    width: 100px;
+    overflow: hidden;
+}
+
+.user {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
 .active {
     margin-right: 2px;
     cursor: pointer;

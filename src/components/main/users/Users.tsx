@@ -5,6 +5,7 @@ import {useDispatch} from "react-redux";
 import {AppDispatchType} from "../../../redux/redux-store";
 import {Paginator} from "./Paginator";
 import {User} from "./User";
+import s from "./users.module.css";
 
 export type UsersPropsType = {
     users: UsersType[]
@@ -23,13 +24,14 @@ const Users = React.memo((props: UsersPropsType) => {
         <div>
             <Paginator activePage={props.activePage} onClickHandler={props.onClickHandler}
                        pageSize={props.pageSize} totalUsersCount={props.totalUsersCount}/>
+            <div className={s.usersList}>
             {props.users.map(u => {
                 const follow = () => {
                     dispatch(followAndUnfollowTC(u))
                 }
                 return <User key={u.id} u={u} isDisabledArray={props.isDisabledArray} follow={follow}/>
-            })
-            }
+            })}
+            </div>
         </div>
     );
 });

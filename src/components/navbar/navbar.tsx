@@ -1,7 +1,6 @@
 import style from './navbar.module.css';
-import {BrowserRouter, NavLink} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 import {FriendsType} from "../../App";
-import {Friends} from "./friends/friends";
 import React from "react";
 
 export type FriendsPropsType = {
@@ -37,10 +36,6 @@ export const Navbar = React.memo(({friends}: FriendsPropsType) => {
                              to="/users">Users</NavLink>
                 </li>
             </ul>
-            <div>
-                <h2 className={style.friends}>Friends</h2>
-                <Friends friends={friends}/>
-            </div>
         </nav>
     )
 })

@@ -23,14 +23,6 @@ export const Paginator = (props: PaginatorPropsType) => {
 
     return (
         <div className={s.paginator}>
-            {/*<button onClick={() => onClickButton(props.activePage - 1)}>prev</button>*/}
-            {/*{pages.map((p, index) => {*/}
-            {/*    return (*/}
-            {/*        <span key={index} className={props.activePage === p ? s.active : s.page}*/}
-            {/*              onClick={() => props.onClickHandler(p)}>{p}</span>*/}
-            {/*    )*/}
-            {/*})}*/}
-            {/*<button onClick={() => onClickButton(props.activePage + 1)}>next</button>*/}
             <Stack spacing={2}>
                 <Pagination
                     className={s.pagination}

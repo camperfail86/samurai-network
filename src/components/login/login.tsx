@@ -44,7 +44,10 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.secondary.main,
     },
     form: {
-        width: '100%', // Fix IE 11 issue.
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'relative',
+        width: '100%', //
         marginTop: theme.spacing(1),
         color: 'white',
     },
@@ -79,38 +82,7 @@ export const Login = () => {
         return <Navigate to={`/profile`}/>
     }
 
-
     return (
-        // <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
-        //     <label>Login
-        //         <input {...register("email", {
-        //                 validate: (value: any) => {
-        //                     if (value.length > 30) {
-        //                         return 'email must be less than 30 characters'
-        //                     }
-        //                 }
-        //             }
-        //         )} />
-        //         {errors.email && <span>{errors.email.message}</span>}
-        //     </label>
-        //     <label>Password
-        //         <input type='password' {...register("password",{validate: (value: any) => {
-        //                 if (value.length <= 6 || value.length > 40) {
-        //                     return 'length password must be more 6 and must be less 40'
-        //                 }
-        //             }} )} />
-        //         {errors.password && <span>{errors.password.message}</span>}
-        //     </label>
-        //     <label>Remember Me
-        //         <Controller
-        //             name="rememberMe"
-        //             control={control}
-        //             render={({field}) => <Checkbox {...field} />}
-        //         />
-        //     </label>
-        //     <input type="submit"/>
-        //     {error && <div>{error}</div>}
-        // </form>
         <Grid container component="main" className={classes.root}>
             <Grid item xs={12} sm={8} md={5} component={Paper} elevation={0} square>
                 <div className={classes.paper}>
@@ -134,15 +106,19 @@ export const Login = () => {
                             label="Электронная почта"
                             autoComplete="email"
                             autoFocus
+                            aria-invalid={errors.email ? "true" : "false"}
                             {...register("email", {
+                                    required: true,
                                     validate: (value: any) => {
+                                        console.log(value)
                                         if (value.length > 30) {
-                                            return 'email must be less than 30 characters'
+                                            return 'email должен быть меньше 30 символов'
                                         }
                                     }
                                 }
                             )}
                         />
+                        {errors.email && <span className={s.errorText}>{errors.email.message}</span>}
                         <TextField
                             color="secondary"
                             className={classes.textFiled}
@@ -157,11 +133,12 @@ export const Login = () => {
                             {...register("password", {
                                 validate: (value: any) => {
                                     if (value.length <= 6 || value.length > 40) {
-                                        return 'length password must be more 6 and must be less 40'
+                                        return 'длина пароля должна быть больше 6 символов'
                                     }
                                 }
                             })}
                         />
+                        {errors.password && <span className={s.errorTextPassword}>{errors.password.message}</span>}
                         <Button
                             type="submit"
                             fullWidth
@@ -177,3 +154,34 @@ export const Login = () => {
         </Grid>
     )
 }
+
+// <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
+//     <label>Login
+//         <input {...register("email", {
+//                 validate: (value: any) => {
+//                     if (value.length > 30) {
+//                         return 'email must be less than 30 characters'
+//                     }
+//                 }
+//             }
+//         )} />
+//         {errors.email && <span>{errors.email.message}</span>}
+//     </label>
+//     <label>Password
+//         <input type='password' {...register("password",{validate: (value: any) => {
+//                 if (value.length <= 6 || value.length > 40) {
+//                     return 'length password must be more 6 and must be less 40'
+//                 }
+//             }} )} />
+//         {errors.password && <span>{errors.password.message}</span>}
+//     </label>
+//     <label>Remember Me
+//         <Controller
+//             name="rememberMe"
+//             control={control}
+//             render={({field}) => <Checkbox {...field} />}
+//         />
+//     </label>
+//     <input type="submit"/>
+//     {error && <div>{error}</div>}
+// </form>

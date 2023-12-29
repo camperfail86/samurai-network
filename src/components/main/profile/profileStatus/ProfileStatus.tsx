@@ -1,7 +1,7 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {getStatusUserTC, setStatusUserTC} from "../../../../reducers/profileReducer";
-import {stateSelector, statusSelector} from "../../../../selectors/selectors";
+import {useDispatch} from "react-redux";
+import { setStatusUserTC} from "../../../../reducers/profileReducer";
+import s from "../profile.module.css"
 
 type ProfileType = {
     id: number
@@ -32,11 +32,12 @@ export const ProfileStatus = ({id, mainStatus}: ProfileType) => {
     }, [mainStatus]);
 
     return (
-        <div>
+        <div className={s.profile}>
+            <span className={s.status}>Статус:</span>
             {!editMode ?
                 <div>
                         <span onDoubleClick={activateEditMode}>
-                            {mainStatus || '123'}
+                            {mainStatus || '-'}
                         </span>
                 </div>
                 :

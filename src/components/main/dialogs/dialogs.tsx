@@ -64,10 +64,10 @@ const Dialogs = React.memo(() => {
             <div className={style.messages}>
                 <Routes>
                     <Route path='/1' element={messagesItems}/>
-                    <Route path='/2' element={<div>2</div>}/>
                 </Routes>
             </div>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <div></div>
+            <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
                 <input {...register('newMessage')} value={messages.newMessage} onChange={onChangeHandler}/>
                 <input type="submit" onClick={onClickHandler}/>
             </form>

@@ -1,28 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App, {stateType} from './App';
+import App from './App';
 import {store} from "./redux/redux-store";
 import {Provider} from "react-redux";
-import {BrowserRouter} from "react-router-dom";
-// import {Provider} from "react-redux";
+import {BrowserRouter, HashRouter} from "react-router-dom";
 
-// убрать пропсы если что
-// const rerender = (state: stateType) => {
 ReactDOM.render(
-    <BrowserRouter>
+    <HashRouter>
         <Provider store={store}>
             <App/>
         </Provider>
-    </BrowserRouter>
+    </HashRouter>
     , document.getElementById('root')
 )
-// ;
-// }
 
-// rerender(store.getState())
-
-// store.subscribe(() => {
-//     let state = store.getState()
-//     rerender(state)
-// })

@@ -1,4 +1,21 @@
 .form {
     display: flex;
     flex-direction: column;
+    position: relative;
+}
+
+.errorText {
+    color: #f50057;
+    position: absolute;
+    left: 0;
+    top: 73px;
+    width: 370px;
+}
+
+.errorTextPassword {
+    color: #f50057;
+    width: 370px;
+    position: absolute;
+    left: 0;
+    top: 155px;
 }

@@ -51,8 +51,8 @@ class UsersAPI extends React.PureComponent<PropsType> {
 
     render() {
         return (
-            <>
-                {this.props.usersInit.isFetching ? <div className={s.loader}></div> :
+            <div className={s.center}>
+                    {this.props.usersInit.isFetching ? <div className={s.loaderUsers}></div> :
                     <Users
                         isDisabledArray={this.props.usersInit.isDisabledArray}
                         totalUsersCount={this.props.usersInit.totalUsersCount}
@@ -61,7 +61,7 @@ class UsersAPI extends React.PureComponent<PropsType> {
                         activePage={this.props.usersInit.activePage}
                         onClickHandler={this.onClickHandler}
                     />}
-            </>
+            </div>
         )
     }
 };

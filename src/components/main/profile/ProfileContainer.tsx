@@ -22,12 +22,12 @@ const ProfileContainer = React.memo(() => {
     const dispatch = useDispatch<AppDispatchType>()
     const profile = useSelector(profileSelector)
     let {userId = 30118} = useParams();
+    // Передать 30118 сразу в диспатч, а userId оставить пустым
 
     useEffect(() => {
         dispatch(getUserProfileInfoTC(+userId))
         dispatch(getStatusUserTC(+userId))
-
-    }, [])
+    }, [userId])
 
     return (
         <>
